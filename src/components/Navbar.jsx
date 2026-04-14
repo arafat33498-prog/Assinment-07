@@ -7,50 +7,34 @@ import { usePathname } from 'next/navigation';
 const Navbar = () => {
     const pathname = usePathname();
 
-   
-    const isHome = pathname === '/' || pathname === '/home';
-    const isTimeline = pathname === '/timeline';
-    const isStats = pathname === '/stats';
-
-    const activeClass = "bg-[#2D4F3F] text-white shadow-sm";
-    const inactiveClass = "text-slate-500 hover:text-green-700 hover:bg-gray-100";
+    
+    const getActiveClass = (path) => {
+        const isActive = path === '/' 
+            ? (pathname === '/' || pathname === '/home') 
+            : pathname === path;
+        
+        return isActive 
+            ? "bg-[#2D4F3F] text-white shadow-sm" 
+            : "text-slate-500 hover:text-green-700 hover:bg-gray-100"; 
+    };
 
     const links = (
         <>
             <li>
-                {/* href এখানে শুধু "/" হবে, যাতে মেইন ডোমেইনে ঢুকলেই এটা একটিভ থাকে */}
-                <Link href="/" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isHome ? activeClass : inactiveClass}`}>
-                    <Image 
-                        src="/home.png" 
-                        alt="Home" 
-                        width={13} 
-                        height={13} 
-                        className={isHome ? "brightness-0 invert" : ""} 
-                    />
+                <Link href="/" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${getActiveClass('/')}`}>
+                    <Image src="/home.png" alt="Home" width={13} height={13} className={getActiveClass('/') === "bg-[#2D4F3F] text-white shadow-sm" ? "brightness-0 invert" : ""} />
                     HOME
                 </Link>
             </li>
             <li>
-                <Link href="/timeline" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isTimeline ? activeClass : inactiveClass}`}>
-                    <Image 
-                        src="/time.png" 
-                        alt="Timeline" 
-                        width={13} 
-                        height={13} 
-                        className={isTimeline ? "brightness-0 invert" : ""} 
-                    />
+                <Link href="/timeline" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${getActiveClass('/timeline')}`}>
+                    <Image src="/time.png" alt="Timeline" width={13} height={13} className={getActiveClass('/timeline') === "bg-[#2D4F3F] text-white shadow-sm" ? "brightness-0 invert" : ""} />
                     TIMELINE
                 </Link>
             </li>
             <li>
-                <Link href="/stats" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isStats ? activeClass : inactiveClass}`}>
-                    <Image 
-                        src="/status.png" 
-                        alt="Stats" 
-                        width={13} 
-                        height={13} 
-                        className={isStats ? "brightness-0 invert" : ""} 
-                    />
+                <Link href="/stats" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${getActiveClass('/stats')}`}>
+                    <Image src="/status.png" alt="Stats" width={13} height={13} className={getActiveClass('/stats') === "bg-[#2D4F3F] text-white shadow-sm" ? "brightness-0 invert" : ""} />
                     STATS
                 </Link>
             </li>
