@@ -7,68 +7,52 @@ import { usePathname } from 'next/navigation';
 const Navbar = () => {
     const pathname = usePathname();
 
-    const getLinkClass = (path) => {
-        const baseClass = "flex items-center gap-2 px-4 py-2 rounded-lg transition-all text-sm font-medium";
-        
-        
-        if (pathname === path) {
-            return `${baseClass} bg-[#2D4F3F] text-white`; 
-        }
-        
-       
-        return `${baseClass} text-slate-500 hover:bg-gray-100`;
-    };
+    const isHome = pathname === '/' || pathname === '/home';
+    const isTimeline = pathname === '/timeline';
+    const isStats = pathname === '/stats';
+
+    const activeClass = "bg-[#2D4F3F] text-white shadow-sm";
+    const inactiveClass = "text-slate-500 hover:text-green-700 hover:bg-gray-100";
+
+    const links = (
+        <>
+            <li>
+                <Link href="/home" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isHome ? activeClass : inactiveClass}`}>
+                    <Image src="/home.png" alt="Home" width={13} height={13} className={isHome ? "brightness-0 invert" : ""} />
+                    HOME
+                </Link>
+            </li>
+            <li>
+                <Link href="/timeline" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isTimeline ? activeClass : inactiveClass}`}>
+                    <Image src="/time.png" alt="Timeline" width={13} height={13} className={isTimeline ? "brightness-0 invert" : ""} />
+                    TIMELINE
+                </Link>
+            </li>
+            <li>
+                <Link href="/stats" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isStats ? activeClass : inactiveClass}`}>
+                    <Image src="/status.png" alt="Stats" width={13} height={13} className={isStats ? "brightness-0 invert" : ""} />
+                    STATS
+                </Link>
+            </li>
+        </>
+    );
 
     return (
-        <nav className="bg-white border-b border-gray-100 px-10 py-4 flex items-center justify-between sticky top-0 z-50">
-            
-            {/* Logo Section */}
+        // py-2 এবং px-6 দিয়ে হাইট কমানো হয়েছে
+        <nav className="bg-white border-b border-gray-100 px-6 py-2 flex items-center justify-between sticky top-0 z-50">
             <div className="flex items-center">
-                <Link href="/" className="text-2xl font-bold tracking-tight">
-                    <span className="text-slate-800 font-extrabold">Keen</span>
-                    <span className="text-[#2D4F3F]">Keeper</span>
+                <Link href="/" className="group">
+                    {/* লোগো সাইজ কিছুটা ছোট করা হয়েছে */}
+                    <Image src="/logo.png" alt="Logo" width={120} height={26} />
                 </Link>
             </div>
 
-            {/* Navigation Links */}
-            <div className="flex items-center">
-                <ul className="flex items-center gap-2">
-                    <li>
-                        <Link href="/home" className={getLinkClass('/home')}>
-                            <Image 
-                                src="/home.png" 
-                                alt="Home" 
-                                width={18} height={18} 
-                                className={pathname === '/home' ? 'brightness-0 invert' : ''} 
-                            />
-                            Home
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/timeline" className={getLinkClass('/timeline')}>
-                            <Image 
-                                src="/time.png" 
-                                alt="Timeline" 
-                                width={18} height={18} 
-                                className={pathname === '/timeline' ? 'brightness-0 invert' : ''}
-                            />
-                            Timeline
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/stats" className={getLinkClass('/stats')}>
-                            <Image 
-                                src="/status.png" 
-                                alt="Stats" 
-                                width={18} height={18} 
-                                className={pathname === '/stats' ? 'brightness-0 invert' : ''}
-                            />
-                            Stats
-                        </Link>
-                    </li>
+            <div className="flex items-center gap-2">
+                {/* লিঙ্কের চারপাশের গ্যাপ এবং প্যাডিং কমানো হয়েছে */}
+                <ul className="flex items-center gap-1 bg-gray-50 p-1 rounded-lg border border-gray-100">
+                    {links}
                 </ul>
             </div>
-
         </nav>
     );
 };
