@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 const Navbar = () => {
     const pathname = usePathname();
 
+   
     const isHome = pathname === '/' || pathname === '/home';
     const isTimeline = pathname === '/timeline';
     const isStats = pathname === '/stats';
@@ -17,20 +18,39 @@ const Navbar = () => {
     const links = (
         <>
             <li>
-                <Link href="/home" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isHome ? activeClass : inactiveClass}`}>
-                    <Image src="/home.png" alt="Home" width={13} height={13} className={isHome ? "brightness-0 invert" : ""} />
+                {/* href এখানে শুধু "/" হবে, যাতে মেইন ডোমেইনে ঢুকলেই এটা একটিভ থাকে */}
+                <Link href="/" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isHome ? activeClass : inactiveClass}`}>
+                    <Image 
+                        src="/home.png" 
+                        alt="Home" 
+                        width={13} 
+                        height={13} 
+                        className={isHome ? "brightness-0 invert" : ""} 
+                    />
                     HOME
                 </Link>
             </li>
             <li>
                 <Link href="/timeline" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isTimeline ? activeClass : inactiveClass}`}>
-                    <Image src="/time.png" alt="Timeline" width={13} height={13} className={isTimeline ? "brightness-0 invert" : ""} />
+                    <Image 
+                        src="/time.png" 
+                        alt="Timeline" 
+                        width={13} 
+                        height={13} 
+                        className={isTimeline ? "brightness-0 invert" : ""} 
+                    />
                     TIMELINE
                 </Link>
             </li>
             <li>
                 <Link href="/stats" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${isStats ? activeClass : inactiveClass}`}>
-                    <Image src="/status.png" alt="Stats" width={13} height={13} className={isStats ? "brightness-0 invert" : ""} />
+                    <Image 
+                        src="/status.png" 
+                        alt="Stats" 
+                        width={13} 
+                        height={13} 
+                        className={isStats ? "brightness-0 invert" : ""} 
+                    />
                     STATS
                 </Link>
             </li>
@@ -38,17 +58,14 @@ const Navbar = () => {
     );
 
     return (
-        // py-2 এবং px-6 দিয়ে হাইট কমানো হয়েছে
         <nav className="bg-white border-b border-gray-100 px-6 py-2 flex items-center justify-between sticky top-0 z-50">
             <div className="flex items-center">
                 <Link href="/" className="group">
-                    {/* লোগো সাইজ কিছুটা ছোট করা হয়েছে */}
                     <Image src="/logo.png" alt="Logo" width={120} height={26} />
                 </Link>
             </div>
 
             <div className="flex items-center gap-2">
-                {/* লিঙ্কের চারপাশের গ্যাপ এবং প্যাডিং কমানো হয়েছে */}
                 <ul className="flex items-center gap-1 bg-gray-50 p-1 rounded-lg border border-gray-100">
                     {links}
                 </ul>
