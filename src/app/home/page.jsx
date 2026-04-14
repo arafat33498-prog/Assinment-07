@@ -35,13 +35,13 @@ const HomePage = () => {
 
             <div className="flex flex-wrap justify-center gap-4 mb-12">
 
-                {/* ১. Total Friends */}
+                
                 <div className="bg-white shadow-sm border border-gray-100 rounded-lg p-8 w-64 text-center">
                     <h2 className="text-3xl font-bold text-gray-800 mb-1">{totalFriends}</h2>
                     <p className="text-gray-400 text-sm">Total Friends</p>
                 </div>
 
-                {/* ২. On Track */}
+              
                 <div className="bg-white shadow-sm border border-gray-100 rounded-lg p-8 w-64 text-center">
                     <h2 className="text-3xl font-bold text-green-500 mb-1">{onTrackCount}</h2>
                     <p className="text-gray-400 text-sm">On Track</p>

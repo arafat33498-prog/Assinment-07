@@ -7,14 +7,33 @@ export default function Page({ params: paramsPromise }) {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        paramsPromise.then(p => {
-            fetch('http://localhost:3000/friends.json')
-                .then(res => res.json())
-                .then(friends => {
-                    const foundUser = friends.find((f) => f.id == p.details);
+        const loadUser = async () => {
+            try {
+                
+                const p = await paramsPromise;
+                
+               
+                const res = await fetch('/friends.json');
+                if (!res.ok) throw new Error("Could not fetch friends.json");
+                
+                const friends = await res.json();
+                
+               
+                const idFromUrl = p.details || p.id; 
+                const foundUser = friends.find((f) => String(f.id) === String(idFromUrl));
+                
+                if (foundUser) {
                     setUser(foundUser);
-                });
-        });
+                } else {
+                    console.error("User not found in JSON");
+                }
+            } catch (error) {
+                console.error("Error loading user data:", error);
+                toast.error("Failed to load contact details!");
+            }
+        };
+
+        loadUser();
     }, [paramsPromise]);
 
     const handleCheckIn = (type) => {
@@ -27,16 +46,21 @@ export default function Page({ params: paramsPromise }) {
         };
         const existingHistory = JSON.parse(localStorage.getItem('activityTimeline')) || [];
         localStorage.setItem('activityTimeline', JSON.stringify([newEntry, ...existingHistory]));
+        
+       
         window.dispatchEvent(new Event('timelineUpdated'));
         toast.success(`${type} record saved for Timeline!`);
     };
 
-    if (!user) return <div className="p-20 text-center">Loading...</div>;
+    if (!user) return (
+        <div className="flex items-center justify-center min-h-screen">
+            <span className="loading loading-spinner loading-lg text-primary"></span>
+        </div>
+    );
 
     return (
         <div className="bg-slate-50 p-6 flex flex-col md:flex-row gap-6 font-sans min-h-screen">
-
-          
+           
             <div className="w-full md:w-80 flex flex-col gap-4">
                 <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col items-center text-center">
                     <div className="avatar mb-4">
@@ -74,7 +98,6 @@ export default function Page({ params: paramsPromise }) {
                 </div>
             </div>
 
-           
             <div className="flex-1 flex flex-col gap-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
@@ -99,7 +122,6 @@ export default function Page({ params: paramsPromise }) {
                     <button className="btn btn-sm btn-ghost bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100">Edit</button>
                 </div>
 
-                {/* Quick Check-In: শুধু onClick ফাংশন অ্যাড করা হয়েছে */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex-1">
                     <h4 className="text-slate-700 font-semibold mb-4">Quick Check-In</h4>
                     <div className="grid grid-cols-3 gap-4">
