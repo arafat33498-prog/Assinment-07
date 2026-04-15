@@ -5,36 +5,14 @@ import { toast } from 'react-toastify';
 
 export default function Page({ params: paramsPromise }) {
     const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const loadUser = async () => {
-            try {
-                
-                const p = await paramsPromise;
-                
-               
-                const res = await fetch('/friends.json');
-                if (!res.ok) throw new Error("Could not fetch friends.json");
-                
-                const friends = await res.json();
-                
-               
-                const idFromUrl = p.details || p.id; 
-                const foundUser = friends.find((f) => String(f.id) === String(idFromUrl));
-                
-                if (foundUser) {
-                    setUser(foundUser);
-                } else {
-                    console.error("User not found in JSON");
-                }
-            } catch (error) {
-                console.error("Error loading user data:", error);
-                toast.error("Failed to load contact details!");
-            }
-        };
-
-        loadUser();
-    }, [paramsPromise]);
+    
+useEffect(() => {
+    (async () => {
+        const p = await paramsPromise;
+        const data = await fetch('/friends.json').then(r => r.json());
+        setUser(data.find(f => f.id == (p.details || p.id)));
+    })();
+}, [paramsPromise]);
 
     const handleCheckIn = (type) => {
         if (!user) return;
