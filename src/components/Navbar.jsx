@@ -5,57 +5,51 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    
-    const getActiveClass = (path) => {
-        const isActive = path === '/' 
-            ? (pathname === '/' || pathname === '/home') 
-            : pathname === path;
-        
-        return isActive 
-            ? "bg-[#2D4F3F] text-white shadow-sm" 
-            : "text-slate-500 hover:text-green-700 hover:bg-gray-100"; 
-    };
-
-    const links = (
-        <>
-            <li>
-                <Link href="/" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${getActiveClass('/')}`}>
-                    <Image src="/home.png" alt="Home" width={13} height={13} className={getActiveClass('/') === "bg-[#2D4F3F] text-white shadow-sm" ? "brightness-0 invert" : ""} />
-                    HOME
-                </Link>
-            </li>
-            <li>
-                <Link href="/timeline" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${getActiveClass('/timeline')}`}>
-                    <Image src="/time.png" alt="Timeline" width={13} height={13} className={getActiveClass('/timeline') === "bg-[#2D4F3F] text-white shadow-sm" ? "brightness-0 invert" : ""} />
-                    TIMELINE
-                </Link>
-            </li>
-            <li>
-                <Link href="/stats" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all uppercase text-[11px] ${getActiveClass('/stats')}`}>
-                    <Image src="/status.png" alt="Stats" width={13} height={13} className={getActiveClass('/stats') === "bg-[#2D4F3F] text-white shadow-sm" ? "brightness-0 invert" : ""} />
-                    STATS
-                </Link>
-            </li>
-        </>
-    );
+  const navItem = (href, label, icon) => {
+    const isActive = pathname === href;
 
     return (
-        <nav className="bg-white border-b border-gray-100 px-6 py-2 flex items-center justify-between sticky top-0 z-50">
-            <div className="flex items-center">
-                <Link href="/" className="group">
-                    <Image src="/logo.png" alt="Logo" width={120} height={26} />
-                </Link>
-            </div>
-
-            <div className="flex items-center gap-2">
-                <ul className="flex items-center gap-1 bg-gray-50 p-1 rounded-lg border border-gray-100">
-                    {links}
-                </ul>
-            </div>
-        </nav>
+      <li>
+        <Link
+          href={href}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+            isActive
+              ? 'bg-[#1e3d33] text-white shadow-md'
+              : 'text-gray-500 hover:bg-gray-100'
+          }`}
+        >
+          <Image
+            src={icon}
+            alt={label}
+            width={16}
+            height={16}
+            className={`${isActive ? 'brightness-0 invert' : ''}`}
+          />
+          {label}
+        </Link>
+      </li>
     );
+  };
+
+  return (
+    <nav className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+
+      {/* Logo */}
+      <Link href="/home">
+        <Image src="/logo.png" alt="Logo" width={141} height={31} />
+      </Link>
+
+      {/* Nav */}
+      <ul className="flex items-center gap-2 bg-gray-50 p-2 rounded-full border border-gray-100">
+        {navItem('/home', 'Home', '/home.png')}
+        {navItem('/timeline', 'Timeline', '/time.png')}
+        {navItem('/stats', 'Stats', '/status.png')}
+      </ul>
+
+    </nav>
+  );
 };
 
 export default Navbar;
